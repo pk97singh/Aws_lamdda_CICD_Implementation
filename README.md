@@ -6,4 +6,4 @@
 4. use code build of aws for this purpose.
 5. In code build we need to configure our git .
 6. to add dependency we need to a lambda function .
-7. also , we need to attach IAM Policy in lambda and codebuild to interact with other aws services as per requirements.
+7. also , we need to attach IAM Policy in lambda and codebuild to interact with other aws services as per requirements
