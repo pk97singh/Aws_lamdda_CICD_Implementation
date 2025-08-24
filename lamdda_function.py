@@ -1,13 +1,24 @@
+import boto3
 import json
-import requests
-import pandas as pd
+import datetime
 
-def lambda_handler(event,context):
-  print("Event Data",event)
-  response=requests.get("https://www.google.com/")
-  print(response.text)
+sns = boto3.client('sns')
 
-  d={'col1':[1,2] , 'col2':[3,4]}
-  df=pd.DataFrame(data=d)
-  print(df)
-  print('Demo Completed!')
+def lambda_handler(event, context):
+    file_name = event['Records'][0]['s3']['object']['key']
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    status = "SUCCESS"  # or dynamically detect
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    message = f"""
+    File Processing Status: {status}
+    File: {file_name}
+    Bucket: {bucket}
+    Time: {timestamp}
+    """
+    
+    sns.publish(
+        TopicArn="arn:aws:sns:us-east-1:065054231720:demosns",
+        Subject=f"{status} - Daily Data Processing",
+        Message=message
+    )
